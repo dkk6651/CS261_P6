@@ -10,7 +10,7 @@ public class Graph {
 
      /**
      * Construct a Graph object
-     * @param none
+     * @param
      */
     public Graph() {
 	this.map = new HashMap<String, ArrayList<Edge>>();
@@ -104,15 +104,21 @@ public class Graph {
      *	@return augment(update) this graph with the new path
      */             
     public void augment(ArrayList<Edge> path) {
-	// if the path is empty, there is no update to this graph
-        if (path.size() <=0) return;
-	
-	int b = bottleNeck(path);
-        // FINISH ME UP TO THE LAST STATEMENT BELOW
-	// ...
-	    
-	// update the flow of this graph with the bottleneck in the path
-	this.flow +=b;
+		// if the path is empty, there is no update to this graph
+			if (path.size() <=0) return;
+
+		int b = bottleNeck(path);
+		for(Edge edge : path){
+			if(edge instanceof EdgeF){
+				edge.flow += b;
+			}
+			else if (edge instanceof EdgeB){
+				edge = new EdgeF(edge.source, edge.dest, edge.capacity, edge.flow - b);
+
+			}
+		}
+		// update the flow of this graph with the bottleneck in the path
+		this.flow +=b;
     }
 
     /**
@@ -170,7 +176,7 @@ class ResGraph extends Graph{
      */             
     public ArrayList <Edge> DFS(String source, String target) {
 
-	// FINISH ME
+	// @todo
 	
 	return new ArrayList<Edge>(); // dummy return value of
 	                              // empty list which signals no path	
@@ -186,11 +192,14 @@ class ResGraph extends Graph{
      *          uses BFS
      */             
     public ArrayList <Edge> BFS(String source, String target) {
+    	ArrayList<Edge> result = new ArrayList<Edge>();
+    	ArrayList<Edge> queue = this.map.get(source);
 
-	// or FINISH ME
+    	while(!queue.isEmpty()){
+
+		}
 	
-	return new ArrayList<Edge>(); // dummy return value of
-	                              // empty list which signals no path
+		return result;
     }
     
 
