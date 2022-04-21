@@ -105,7 +105,7 @@ public class Graph {
      */             
     public void augment(ArrayList<Edge> path) {
 		// if the path is empty, there is no update to this graph
-			if (path.size() <=0) return;
+		if (path.size() <=0) return;
 
 		int b = bottleNeck(path);
 		for(Edge edge : path){
@@ -113,8 +113,8 @@ public class Graph {
 				edge.flow += b;
 			}
 			else if (edge instanceof EdgeB){
-				edge = new EdgeF(edge.source, edge.dest, edge.capacity, edge.flow - b);
-
+				edge = new EdgeF(edge.dest, edge.source, edge.capacity, edge.flow);
+				edge.flow -= b;
 			}
 		}
 		// update the flow of this graph with the bottleneck in the path
@@ -174,12 +174,12 @@ class ResGraph extends Graph{
      *          returns an empty path[] if there is no path
      *          uses DFS
      */             
-    public ArrayList <Edge> DFS(String source, String target) {
+    public ArrayList <Edge> DFS(String source, String target){
+		ArrayList<Edge> result = new ArrayList<>();
 
-	// @todo
-	
-	return new ArrayList<Edge>(); // dummy return value of
-	                              // empty list which signals no path	
+		//todo
+
+		return result;
     }
 
 
@@ -195,10 +195,8 @@ class ResGraph extends Graph{
     	ArrayList<Edge> result = new ArrayList<Edge>();
     	ArrayList<Edge> queue = this.map.get(source);
 
-    	while(!queue.isEmpty()){
+    	//todo
 
-		}
-	
 		return result;
     }
     
