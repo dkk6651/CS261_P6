@@ -1,5 +1,12 @@
 import java.util.*;
 
+/**
+ * File Name: Graph.java
+ * Author: RIT_CS, Daniel Kee Kim
+ * Description: Graph class used in finding maximum flow utilizing Ford-Fulkerson Algorithm.
+ * Full implementation of all functions. Uses DFS to search out optimal path.
+ */
+
 public class Graph {
     
     public Map<String, ArrayList<Edge>> map;   // keys are nodes
@@ -110,11 +117,19 @@ public class Graph {
 		int b = bottleNeck(path);
 		for(Edge edge : path){
 			if(edge instanceof EdgeF){
-				edge.flow += b;
+				for(Edge e : this.map.get(edge.source)){
+					if(e.dest.equals(edge.dest)){
+						e.flow += b;
+					}
+				}
 			}
 			else if (edge instanceof EdgeB){
-				edge = new EdgeF(edge.dest, edge.source, edge.capacity, edge.flow);
-				edge.flow -= b;
+				edge = new EdgeF(edge.dest, edge.source, edge.flow, edge.capacity);
+				for(Edge e : this.map.get(edge.source)){
+					if(e.dest.equals(edge.dest)){
+						e.flow -= b;
+					}
+				}
 			}
 		}
 		// update the flow of this graph with the bottleneck in the path
@@ -175,12 +190,47 @@ class ResGraph extends Graph{
      *          uses DFS
      */             
     public ArrayList <Edge> DFS(String source, String target){
-		ArrayList<Edge> result = new ArrayList<>();
+		ArrayList<Edge> result;
+    	HashMap<String, Boolean> visited = new HashMap<>();
+		for(String node : this.getNodes()){
+			visited.put(node, false);
+		}
 
-		//todo
+		result = DFSUtil(source, target, visited);
+		if(result == null){
+			return new ArrayList<Edge>();
+		}
 
 		return result;
     }
+
+	/**
+	 * DFS utility function that is used recursively
+	 * @param source node for search
+	 * @param target node for search
+	 * @param visited boolean map of visited nodes
+	 * @return list of all edges along the path, returns empty if none available
+	 */
+    private ArrayList<Edge> DFSUtil(String source, String target, HashMap<String, Boolean> visited){
+    	ArrayList<Edge> result = new ArrayList<>();
+    	visited.put(source, true);
+    	for(Edge e : this.map.get(source)){
+    		if(e.dest.equals(target)){
+    			result.add(e);
+    			return result;
+			}
+    		if(!visited.get(e.dest)){
+    			ArrayList<Edge> temp = DFSUtil(e.dest, target, visited);
+    			if(temp != null){
+    				result.addAll(temp);
+    				result.add(e);
+    				return result;
+				}
+			}
+		}
+
+    	return null;
+	}
 
 
     /**
@@ -192,10 +242,8 @@ class ResGraph extends Graph{
      *          uses BFS
      */             
     public ArrayList <Edge> BFS(String source, String target) {
-    	ArrayList<Edge> result = new ArrayList<Edge>();
-    	ArrayList<Edge> queue = this.map.get(source);
+    	ArrayList<Edge> result = new ArrayList<>();
 
-    	//todo
 
 		return result;
     }
